@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="jquery-1.11.3.js"></script>
+  <style>
+    .big{
+      width:1000px;
+      margin:auto;
+      /* height:400px; */
+      /* display:flex;
+      justify-content: start; */
+      overflow:hidden;
+    }
+    .big>div{
+      width:3000px;
+      margin-left:-1000px;
+      display:flex;
+      justify-content: start;
+      
+    }
+    .transition{
+      transition:all .5s linear;
+    }
+    .big>div>div{
+      width:1000px;
+    }
+    .big img{
+      width:100%;
+    }
+    .bottom{
+      display:flex;
+      justify-content: start;
+    }
+    .bottom>div{
+      width:200px;
+      margin-left:30px;
+    }
+    .bottom>div>img{
+      width:100%;
+    }
+    .active{
+      border:2px solid #f00;
+    }
+    .hidden{
+      display:none;
+    }
+  </style>
+</head>
+<body>
+  <div class="big">
+    <div class="transition">
+      <div class="left"><img src="carousel-2.jpg" alt=""></div>
+      <div class="center"><img src="carousel-1.jpg" alt=""></div>
+      <div class="right"><img src="carousel-3.jpg" alt=""></div>
+    </div>
+    
+  </div>
+  <div class="bottom">
+    <div data-index="0" class="active"><img src="carousel-1.jpg" alt=""></div>
+    <div data-index="1"><img src="carousel-2.jpg" alt=""></div>
+    <div data-index="2"><img src="carousel-3.jpg" alt=""></div>
+    <div data-index="3"><img src="carousel-4.jpg" alt=""></div>
+  </div>
+</body>
+<script>
+  slide();
+  function slide(){
+    $('.bottom').on('click','div',function(){
+      var distance=1000;
+      var transEle=$('.big>div');//需要变化的元素
+      var active=$('.active');
+      var $this=$(this);
+      var clickIndex=$this.attr('data-index');//点击元素的data-index
+      var currentIndex=active.attr('data-index');//当前元素的data-index
+      var currentSrc=$this.children('img').attr('src');
+      var rightImg=$('.right').children('img');
+      var centerImg=$('.center').children('img');
+      var leftImg=$('.left').children('img');
+      // 去掉当前元素的class
+      active.removeClass('active');
+      // 将点击元素添加class
+      $this.addClass('active');
+      // 如果点击的index>当前的index right变
+      if(clickIndex>currentIndex){
+        rightImg.attr('src',currentSrc);
+        transEle.css('margin-left',-distance*2);
+      }else if(clickIndex<currentIndex){// 如果点击的index<当前的index left变
+        leftImg.attr('src',currentSrc);
+        transEle.css('margin-left',0);
+      }
+      setTimeout(function(){
+        transEle.removeClass('transition');
+        centerImg.attr('src',currentSrc);
+        transEle.css('margin-left',-distance);
+      },500);
+      transEle.addClass('transition');
+    })
+  }
+</script>
+</html>
